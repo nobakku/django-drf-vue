@@ -1,15 +1,14 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
-  transpileDependencies: true,
+
 });
-
-
 
 const BundleTracker = require("webpack-bundle-tracker");
 
 module.exports = {
   publicPath: "http://0.0.0.0:8080/",
   outputDir: "./dist/",
+  transpileDependencies: ["vuetify"],
 
   chainWebpack: (config) => {
     config
