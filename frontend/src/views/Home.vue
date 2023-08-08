@@ -14,7 +14,7 @@
       </div>
       <div class="my-4">
         <p v-show="loadingJobs">...loading...</p>
-        <v-btn v-show="next" @click="getJobs" color="success">Load More </v-btn>
+        <v-btn v-show="next" @click="getJobs" color="#507bb7">Load More </v-btn>
       </div>
     </v-container>
   </div>
@@ -64,6 +64,6 @@ export default {
 }
 
 .job-link:hover {
-  color: #41b883;
+  color: #507bb7;
 }
 </style>
