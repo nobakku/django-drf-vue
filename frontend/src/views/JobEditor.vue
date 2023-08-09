@@ -45,6 +45,15 @@ import { apiService } from "../common/api.service.js";
 
 export default {
   name: "JobEditor",
+  // propsで受け取るパラメータを設定する
+  props: {
+    id: {
+      type: Number,
+      required: false,
+    },
+  },
+
+  // data関数で初期データを定義する
   data() {
     return {
       company_name: null,
@@ -57,10 +66,21 @@ export default {
       error: null,
     };
   },
+
+  // methodsでコンポーネントのメソッドを定義する
   methods: {
+    // フォームの送信時に実行されるメソッド
     onSubmit() {
       let endpoint = "/api/jobs/";
       let method = "POST";
+
+      // idが定義されている場合は、エンドポイントにidを追加し、メソッドを"PUT"に変更する
+      if (this.id !== undefined) {
+        endpoint += `${this.id}/`;
+        method = "PUT";
+      }
+
+      // apiServiceを使用してAPIリクエストを送信し、レスポンスを処理する
       apiService(endpoint, method, {
         company_name: this.company_name,
         company_email: this.company_email,
@@ -70,6 +90,7 @@ export default {
         prefectures: this.prefectures,
         city: this.city,
       }).then((job_data) => {
+        // レスポンスのデータを使ってリダイレクトする
         this.$router.push({
           name: "job",
           params: { id: job_data.id },
@@ -77,6 +98,31 @@ export default {
       });
     },
   },
+
+  // beforeRouteEnterフックを使用して、ルートが変更される前に非同期データを取得する
+  async beforeRouteEnter(to, from, next) {
+    if (to.params.id !== undefined) {
+      let endpoint = `/api/jobs/${to.params.id}/`;
+
+      // apiServiceを使用してデータを取得する
+      let data = await apiService(endpoint);
+
+      return next((vm) => {
+        // 取得したデータをコンポーネントのdataにセットする
+        vm.company_name = data.company_name;
+        vm.company_email = data.company_email;
+        vm.job_title = data.job_title;
+        vm.job_description = data.job_description;
+        vm.salary = data.salary;
+        vm.prefectures = data.prefectures;
+        vm.city = data.city;
+      });
+    } else {
+      return next();
+    }
+  },
+
+  // createdフックでページのタイトルを設定する
   created() {
     document.title = "Editor - Job";
   },
