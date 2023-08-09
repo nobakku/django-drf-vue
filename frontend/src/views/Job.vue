@@ -31,30 +31,35 @@ export default {
   },
   data() {
     return {
-      job: {},
+      job: {}, // jobオブジェクトを初期化
     };
   },
   methods: {
     setPageTitle(title) {
+      // ページのタイトルを設定するメソッド
       document.title = title;
     },
     getJobData() {
+      // ジョブデータを取得するメソッド
       let endpoint = `/api/jobs/${this.id}/`;
       apiService(endpoint).then((data) => {
-        this.job = data;
-        this.setPageTitle(data.company_name);
+        this.job = data; // 取得したデータをjobオブジェクトにセット
+        this.setPageTitle(data.company_name); // ジョブデータのcompany_nameプロパティをページタイトルに設定
       });
     },
     deleteJobData() {
+      // ジョブデータを削除するメソッド
       let endpoint = `/api/jobs/${this.id}/`;
       apiService(endpoint, "DELETE").then(() => {
         this.$router.push({
+          // ルーターを使用して'home'ルートに遷移
           name: "home",
         });
       });
     },
   },
   created() {
+    // コンポーネントが作成された時に実行する処理
     this.getJobData();
   },
 };
