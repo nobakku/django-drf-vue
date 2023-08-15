@@ -3,6 +3,7 @@
     <v-container>
       <div v-for="job in jobs" :key="job.pk">
         <h2>
+          <!-- router-link は Vue Router のリンクコンポーネントで、各求人の詳細ページへのリンクを提供 -->
           <router-link
             :to="{ name: 'job', params: { id: job.id } }"
             class="job-link"
@@ -25,6 +26,7 @@ import { apiService } from "../common/api.service.js";
 export default {
   name: "homeView",
   data() {
+    // コンポーネントの初期状態を定義
     return {
       jobs: [],
       next: null,
@@ -33,6 +35,7 @@ export default {
   },
   methods: {
     getJobs() {
+      // APIから求人のデータを取得し、それを jobs 配列に追加
       let endpoint = "/api/jobs/";
       if (this.next) {
         endpoint = this.next;

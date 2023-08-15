@@ -7,31 +7,32 @@ module.exports = defineConfig({});
 // webpack-bundle-trackerパッケージをインポートする
 const BundleTracker = require("webpack-bundle-tracker");
 
-// ウェブパックの設定オブジェクトを定義し、モジュールとしてエクスポートする
+// Webpackの設定オブジェクトを定義し、モジュールとしてエクスポートする
 module.exports = {
-  // プロジェクトの公開パスを指定する
+  // プロジェクトの公開パスを指定
   publicPath: "http://0.0.0.0:8080/",
 
-  // 出力ディレクトリを指定する
+  // ビルドされたアセットの出力ディレクトリを指定
   outputDir: "./dist/",
 
   // transpileDependenciesに"vuetify"を指定し、トランスパイルの対象に含める
   transpileDependencies: ["vuetify"],
 
-  // chainWebpack関数を使用してウェブパックの設定を変更する
+  // chainWebpackはWebpackの設定を変更できる関数
   chainWebpack: (config) => {
-    // BundleTrackerプラグインを追加し、ファイル名を指定する
     config
+      // BundleTrackerプラグインを追加
       .plugin("BundleTracker")
+      // webpack-stats.jsonという名前でビルド情報のJSONファイルを出力
       .use(BundleTracker, [{ filename: "./webpack-stats.json" }]);
 
     // 出力ファイルの名前を"bundle.js"に変更する
     config.output.filename("bundle.js");
 
-    // チャンクの分割を無効にする
+    // チャンクの分割を無効にする(すべてのコードが1つのバンドルファイルにまとめられる)
     config.optimization.splitChunks(false);
 
-    // リゾルブのエイリアスを設定し、"__STATIC__"を"static"にマッピングする
+    //  __STATIC__ というエイリアスを使用することで static パスを参照できるようにする
     config.resolve.alias.set("__STATIC__", "static");
 
     // devServerの設定を変更する

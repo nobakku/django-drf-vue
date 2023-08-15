@@ -1,6 +1,6 @@
 import { CSRF_TOKEN } from "./csrf_token.js";
 
-// レスポンスを処理する関数
+// APIからのレスポンスを処理する関数
 function handleResponse(response) {
   // ステータスコードが204の場合、空文字列を返す
   if (response.status === 204) {
@@ -22,7 +22,7 @@ function apiService(endpoint, method, data) {
   const config = {
     // メソッドを指定（デフォルトはGET）
     method: method || "GET",
-    // データがある場合はJSON形式に変換して設定（ない場合はnull）
+    // データがある場合はJSON形式の文字列に変換して設定（ない場合はnull）
     body: data !== undefined ? JSON.stringify(data) : null,
     // ヘッダーを設定
     headers: {
